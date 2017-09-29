@@ -139,6 +139,81 @@ class Adafruit_DCMotor_Hat:
     def shutdown(self):
         self.mh.getMotor(self.motor_num).run(Adafruit_MotorHAT.RELEASE)
 
+class L298N:
+    """
+    L298N Dual H-Bridge Motor Controller
+    Used for each motor on a differential drive car.
+
+    Wiring (adapt GPIO pins in code below if necessary):
+    RPi GPIO => L298N
+     6       => IN1
+    13       => IN2
+    19       => IN3
+    26       => IN4
+    """
+    def __init__(self, controller_left, controller_right):
+
+        from __future__ import division
+        import RPi.GPIO as io
+
+        LEFT_ANGLE = -1
+        RIGHT_ANGLE = 1
+
+        self.controller_left = controller_left
+        self.controller_right = controller_right
+
+        io.setmode(io.BCM)
+
+        # PCA9685 operates at 25 MHz @ 12bit (=4096) resolution
+        max_pulse = 4095
+
+        # GPIO adresses on RPi
+        self.GPIO = {6, 13, 19, 26}
+
+        # IN1 = 6
+        # IN2 = 13
+        # IN3 = 19
+        # IN4 = 26
+
+        # define GPIO pins as OUT
+        io.setup(self.GPIO[0], io.OUT)
+        io.setup(self.GPIO[1], io.OUT)
+        io.setup(self.GPIO[2], io.OUT)
+        io.setup(self.GPIO[3], io.OUT)
+
+        # initialise GPIOs
+        io.output(self.GPIO[0], False)
+        io.output(self.GPIO[1], False)
+        io.output(self.GPIO[2], False)
+        io.output(self.GPIO[3], False)
+
+        self.speed = 0
+        self.angle = 0
+        self.throttle = 0
+
+    def run(self, throttle, angle = 0):
+        if throttle < 0:
+            raise ValueError("Dont know how to reverse yet")
+
+        # Vorwärts immer, rückwärts nimmer:
+        io.output(self.GPIO[0], False)
+        io.output(self.GPIO[1], True)
+        io.output(self.GPIO[2], False)
+        io.output(self.GPIO[3], True)
+
+        if angle < 0:
+            self.controller_left.set_pulse(max_pulse * abs(angle) * speed)
+            self.controller_right.set_pulse(max_pulse * speed))
+        else:
+            self.controller_left.set_pulse(max_pulse * speed)
+            self.controller_right.set_pulse(max_pulse * angle * speed)
+
+    def shutdown(self):
+        io.output(self.GPIO[0], False)
+        io.output(self.GPIO[1], False)
+        io.output(self.GPIO[2], False)
+        io.output(self.GPIO[3], False)
+
 class Maestro:
     '''
     Pololu Maestro Servo controller
