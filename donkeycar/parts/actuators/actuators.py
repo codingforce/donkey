@@ -188,7 +188,7 @@ class L298N:
         self.throttle = 0
 
     def run(self, throttle, angle=0):
-        print("angle:{0}, throttle:{1}".format(angle, throttle)
+        print("angle:{0}, throttle:{1}".format(angle, throttle))
         # if throttle < 0:
         #    raise ValueError("Dont know how to reverse yet")
 
@@ -204,6 +204,7 @@ class L298N:
         else:
             left_pulse = floor(self.max_pulse)
             right_pulse = floor(self.max_pulse * (1-abs(angle))
+
         print("left pulse:", left_pulse)
         print("right pulse:", right_pulse)
         self.controller_left.set_pulse(left_pulse)
