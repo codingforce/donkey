@@ -203,7 +203,7 @@ class L298N:
             right_pulse = floor(self.max_pulse)
         else:
             left_pulse = floor(self.max_pulse)
-            right_pulse = floor(self.max_pulse * (1-abs(angle))
+            right_pulse = floor(self.max_pulse * (1-abs(angle)))
 
         print("left pulse:", left_pulse)
         print("right pulse:", right_pulse)
