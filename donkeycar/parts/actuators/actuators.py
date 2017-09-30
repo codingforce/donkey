@@ -192,8 +192,8 @@ class L298N:
         #    raise ValueError("Dont know how to reverse yet")
 
         # Vorwärts immer, rückwärts nimmer:
-        io.output(self.GPIO1, False)
-        io.output(self.GPIO2, True)
+        io.output(self.GPIO1, True)
+        io.output(self.GPIO2, False)
         io.output(self.GPIO3, False)
         io.output(self.GPIO4, True)
 
