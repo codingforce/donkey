@@ -188,8 +188,8 @@ class L298N:
         self.throttle = 0
 
     def run(self, throttle, angle=0):
-        if throttle < 0:
-            raise ValueError("Dont know how to reverse yet")
+        # if throttle < 0:
+        #    raise ValueError("Dont know how to reverse yet")
 
         # Vorwärts immer, rückwärts nimmer:
         io.output(self.GPIO1, False)
