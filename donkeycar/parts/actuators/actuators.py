@@ -4,6 +4,7 @@ Classes to control the motors and servos. These classes
 are wrapped in a mixer class before being used in the drive loop.
 """
 
+from __future__ import division
 import time
 
 from ... import utils
@@ -153,7 +154,6 @@ class L298N:
     """
     def __init__(self, controller_left, controller_right):
 
-        from __future__ import division
         import RPi.GPIO as io
 
         LEFT_ANGLE = -1
@@ -203,7 +203,7 @@ class L298N:
 
         if angle < 0:
             self.controller_left.set_pulse(max_pulse * abs(angle) * speed)
-            self.controller_right.set_pulse(max_pulse * speed))
+            self.controller_right.set_pulse(max_pulse * speed)
         else:
             self.controller_left.set_pulse(max_pulse * speed)
             self.controller_right.set_pulse(max_pulse * angle * speed)
