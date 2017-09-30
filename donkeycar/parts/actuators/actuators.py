@@ -188,6 +188,7 @@ class L298N:
         self.throttle = 0
 
     def run(self, throttle, angle=0):
+        print("angle:{0}, throttle:{1}".format(angle, throttle))
         # if throttle < 0:
         #    raise ValueError("Dont know how to reverse yet")
 
