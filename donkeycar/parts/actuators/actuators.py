@@ -161,7 +161,10 @@ class L298N:
         self.max_pulse = 4095
 
         # GPIO adresses on RPi
-        self.GPIO = {6, 13, 19, 26}
+        self.GPIO1 = 6
+        self.GPIO2 = 13
+        self.GPIO3 = 19
+        self.GPIO4 = 26
 
         # IN1 = 6
         # IN2 = 13
@@ -169,16 +172,16 @@ class L298N:
         # IN4 = 26
 
         # define GPIO pins as OUT
-        io.setup(self.GPIO[0], io.OUT)
-        io.setup(self.GPIO[1], io.OUT)
-        io.setup(self.GPIO[2], io.OUT)
-        io.setup(self.GPIO[3], io.OUT)
+        io.setup(self.GPIO1, io.OUT)
+        io.setup(self.GPIO2, io.OUT)
+        io.setup(self.GPIO3, io.OUT)
+        io.setup(self.GPIO4, io.OUT)
 
         # initialise GPIOs
-        io.output(self.GPIO[0], False)
-        io.output(self.GPIO[1], False)
-        io.output(self.GPIO[2], False)
-        io.output(self.GPIO[3], False)
+        io.output(self.GPIO1, False)
+        io.output(self.GPIO2, False)
+        io.output(self.GPIO3, False)
+        io.output(self.GPIO4, False)
 
         self.angle = 0
         self.throttle = 0
@@ -188,10 +191,10 @@ class L298N:
             raise ValueError("Dont know how to reverse yet")
 
         # Vorwärts immer, rückwärts nimmer:
-        io.output(self.GPIO[0], False)
-        io.output(self.GPIO[1], True)
-        io.output(self.GPIO[2], False)
-        io.output(self.GPIO[3], True)
+        io.output(self.GPIO1, False)
+        io.output(self.GPIO2, True)
+        io.output(self.GPIO3, False)
+        io.output(self.GPIO4, True)
 
         if angle < 0:
             self.controller_left.set_pulse(self.max_pulse * abs(angle))
@@ -201,10 +204,10 @@ class L298N:
             self.controller_right.set_pulse(self.max_pulse * angle)
 
     def shutdown(self):
-        io.output(self.GPIO[0], False)
-        io.output(self.GPIO[1], False)
-        io.output(self.GPIO[2], False)
-        io.output(self.GPIO[3], False)
+        io.output(self.GPIO1, False)
+        io.output(self.GPIO2, False)
+        io.output(self.GPIO3, False)
+        io.output(self.GPIO4, False)
 
 
 class Maestro:
