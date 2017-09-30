@@ -5,6 +5,7 @@ are wrapped in a mixer class before being used in the drive loop.
 """
 
 from __future__ import division
+from math import floor
 import time
 import RPi.GPIO as io
 
@@ -197,11 +198,11 @@ class L298N:
         io.output(self.GPIO4, True)
 
         if angle < 0:
-            self.controller_left.set_pulse(math.floor(self.max_pulse * abs(angle)))
-            self.controller_right.set_pulse(math.floor(self.max_pulse))
+            self.controller_left.set_pulse(floor(self.max_pulse * abs(angle)))
+            self.controller_right.set_pulse(floor(self.max_pulse))
         else:
-            self.controller_left.set_pulse(math.floor(self.max_pulse))
-            self.controller_right.set_pulse(math.floor(self.max_pulse * angle))
+            self.controller_left.set_pulse(floor(self.max_pulse))
+            self.controller_right.set_pulse(floor(self.max_pulse * angle))
 
     def shutdown(self):
         io.output(self.GPIO1, False)
