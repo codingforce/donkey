@@ -188,7 +188,7 @@ class L298N:
         self.throttle = 0
 
     def run(self, throttle, angle=0):
-        print("angle:{0}, throttle:{1}".format(angle, throttle))
+        print("angle:{0}, throttle:{1}".format(angle, throttle)
         # if throttle < 0:
         #    raise ValueError("Dont know how to reverse yet")
 
@@ -199,11 +199,15 @@ class L298N:
         io.output(self.GPIO4, True)
 
         if angle < 0:
-            self.controller_left.set_pulse(floor(self.max_pulse * abs(angle)))
-            self.controller_right.set_pulse(floor(self.max_pulse))
+            left_pulse = floor(self.max_pulse * (1-abs(angle)))
+            right_pulse = floor(self.max_pulse)
         else:
-            self.controller_left.set_pulse(floor(self.max_pulse))
-            self.controller_right.set_pulse(floor(self.max_pulse * angle))
+            left_pulse = floor(self.max_pulse)
+            right_pulse = floor(self.max_pulse * (1-abs(angle))
+        print("left pulse:", left_pulse)
+        print("right pulse:", right_pulse)
+        self.controller_left.set_pulse(left_pulse)
+        self.controller_right.set_pulse(right_pulse)
 
     def shutdown(self):
         io.output(self.GPIO1, False)
