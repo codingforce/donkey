@@ -143,7 +143,8 @@ class Adafruit_DCMotor_Hat:
 class L298N:
     """
     L298N Dual H-Bridge Motor Controller
-    Used for each motor on a differential drive car.
+    Used for left & right motors on a differential drive car.
+    Controller's input pins (IN1..4) must be connected to RPi's GPIOs and enable pins (EN1, EN2) are connected to PCA9685 
 
     Wiring (adapt GPIO pins in code below if necessary):
     RPi GPIO => L298N
@@ -167,11 +168,6 @@ class L298N:
         self.GPIO3 = 19
         self.GPIO4 = 26
 
-        # IN1 = 6
-        # IN2 = 13
-        # IN3 = 19
-        # IN4 = 26
-
         # define GPIO pins as OUT
         io.setup(self.GPIO1, io.OUT)
         io.setup(self.GPIO2, io.OUT)
@@ -188,7 +184,6 @@ class L298N:
         self.throttle = 0
 
     def run(self, throttle, angle=0):
-        print("angle:{0}, throttle:{1}".format(angle, throttle))
         # if throttle < 0:
         #    raise ValueError("Dont know how to reverse yet")
 
@@ -205,8 +200,9 @@ class L298N:
             left_pulse = floor(self.max_pulse)
             right_pulse = floor(self.max_pulse * (1-abs(angle)))
 
-        print("left pulse:", left_pulse)
-        print("right pulse:", right_pulse)
+        print("angle:{0:>+4.2f}, throttle:{1:>+4.2f}, left pulse:{2:>4d}, right pulse:{3:>4d}".format(angle, throttle, left_pulse, right_pulse))
+        # print("left pulse:", left_pulse)
+        # print("right pulse:", right_pulse)
         self.controller_left.set_pulse(left_pulse)
         self.controller_right.set_pulse(right_pulse)
 
