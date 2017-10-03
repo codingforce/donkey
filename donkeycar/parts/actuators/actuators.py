@@ -157,12 +157,11 @@ class L298N:
         self.controller_left = controller_left
         self.controller_right = controller_right
 
-        io.setmode(io.BCM)
-
         # PCA9685 operates at 25 MHz @ 12bit (=4096) resolution
         self.max_pulse = 4095
 
         # GPIO adresses on RPi
+        io.setmode(io.BCM)
         self.GPIO1 = 6
         self.GPIO2 = 13
         self.GPIO3 = 19
@@ -184,14 +183,19 @@ class L298N:
         self.throttle = 0
 
     def run(self, throttle, angle=0):
-        # if throttle < 0:
-        #    raise ValueError("Dont know how to reverse yet")
-
-        # Vorwärts immer, rückwärts nimmer:
-        io.output(self.GPIO1, True)
-        io.output(self.GPIO2, False)
-        io.output(self.GPIO3, False)
-        io.output(self.GPIO4, True)
+        
+        # set direction reverse
+        if throttle < 0:
+            io.output(self.GPIO1, False)
+            io.output(self.GPIO2, True)
+            io.output(self.GPIO3, True)
+            io.output(self.GPIO4, False)
+        # forward
+        else:
+            io.output(self.GPIO1, True)
+            io.output(self.GPIO2, False)
+            io.output(self.GPIO3, False)
+            io.output(self.GPIO4, True)
 
         straight_pulse = self.max_pulse * abs(throttle)
         if angle < 0:
@@ -202,7 +206,7 @@ class L298N:
             right_pulse = floor(straight_pulse * (1-angle))
 
         # debugging
-        print("angle {0:>+4.2f} | throttle {1:>+4.2f} | L pulse:{2:>4d} | R pulse:{3:>4d}".format(angle, throttle, left_pulse, right_pulse))
+        print("angle {0:>+4.2f} | throttle {1:>+4.2f} | L pulse {2:>4d} | R pulse {3:>4d}".format(angle, throttle, left_pulse, right_pulse))
         self.controller_left.set_pulse(left_pulse)
         self.controller_right.set_pulse(right_pulse)
 
