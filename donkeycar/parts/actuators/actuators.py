@@ -193,13 +193,13 @@ class L298N:
         io.output(self.GPIO3, False)
         io.output(self.GPIO4, True)
 
-        straight_pulse = max_pulse * abs(throttle)
+        straight_pulse = self.max_pulse * abs(throttle)
         if angle < 0:
-            left_pulse = floor(self.straight_pulse * (1-abs(angle)))
-            right_pulse = floor(self.straight_pulse)
+            left_pulse = floor(straight_pulse * (1-abs(angle)))
+            right_pulse = floor(straight_pulse)
         else:
-            left_pulse = floor(self.straight_pulse)
-            right_pulse = floor(self.straight_pulse * (1-abs(angle)))
+            left_pulse = floor(straight_pulse)
+            right_pulse = floor(straight_pulse * (1-angle))
 
         # debugging
         print("angle {0:>+4.2f} | throttle {1:>+4.2f} | L pulse:{2:>4d} | R pulse:{3:>4d}".format(angle, throttle, left_pulse, right_pulse))
